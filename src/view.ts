@@ -4,12 +4,20 @@ Renderer is a class which should render each section of the user page through Ha
 
 
 // RENDER
-// import * as Handlebars from "handlebars";
 
-// ye quote
-// const source = $('#ye-template').html();
-// const template = Handlebars.compile(source);
-// const newHTML = template(calls.yeQuote); 
+class render {
 
-// append our new html to the page
-// $('.quote-container').append(newHTML);
+   
+    constructor() {
+    }
+
+    rendQuote(quote:any) {    // ye quote
+        const source = $('#ye-template').html();
+        const template = Handlebars.compile(source);
+        const newHTML = template(quote); 
+        
+        // append our new html to the page
+        $('.quote-container').append(newHTML);
+    }
+}
+
