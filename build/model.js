@@ -12,7 +12,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 // APIs
-class apiCall {
+class api {
     // YE
     YeApiCall() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23,22 +23,34 @@ class apiCall {
             });
         });
     }
+    // Bacon Ipsum
+    BaconApiCall() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield $.ajax({
+                method: "GET",
+                url: 'https://baconipsum.com/api/?type=meat-and-filler&paras=1',
+                success: (data) => data
+            });
+        });
+    }
     // UserApiCall() {
     // }
     callAll() {
         return __awaiter(this, void 0, void 0, function* () {
+            let result = {
+                ye: "",
+                bacon: ""
+            };
             const ye = this.YeApiCall();
-            let result;
-            yield Promise.all([ye])
+            const bacon = this.BaconApiCall();
+            yield Promise.all([ye, bacon])
                 .then(function (results) {
-                console.log(results[0]["quote"]);
-                // console.log(results[1].data[0]);
-                // q = results[0]["quote"]
+                // console.log(results[0]["quote"])
                 result = {
-                    ye: results[0]["quote"]
+                    ye: results[0]["quote"],
+                    bacon: results[1]
                 };
             });
-            // this.yeQuote = q;
             return result;
         });
     }

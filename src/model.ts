@@ -18,19 +18,43 @@ class api {
         })
     }
 
+    // Bacon Ipsum
+    async BaconApiCall() {
+        return await $.ajax({
+            method: "GET",
+            url: 'https://baconipsum.com/api/?type=meat-and-filler&paras=1',       
+            success: (data) => data 
+        })
+    }
+
+    async PokemonApiCall() {
+        return await $.ajax({
+            method: "GET",
+            url: "",
+            success: (data) => data
+        })
+    }
+
     // UserApiCall() {
     // }
 
     async callAll() {
-        const ye = this.YeApiCall()
-        let result;
+        let result = {
+            ye: "",
+            bacon: ""
+        };
 
-        await Promise.all([ye])
+        const ye = this.YeApiCall()
+        const bacon = this.BaconApiCall()
+    
+
+        await Promise.all([ye, bacon])
         .then(function (results) {
-            console.log(results[0]["quote"])
+            // console.log(results[0]["quote"])
 
             result = {
-                ye: results[0]["quote"]
+                ye: results[0]["quote"],
+                bacon: results[1]
             }
         })
 
