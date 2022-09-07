@@ -11,6 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+let User;
+let Data;
+let Pokemon;
 // APIs
 class api {
     // YE
@@ -40,7 +43,23 @@ class api {
             return yield $.ajax({
                 method: "GET",
                 url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,
-                success: (data) => data
+                success: (data) => data,
+                // error: function(xhr, textStatus, errorThrown ) {
+                //     if (textStatus == 'timeout') {
+                //         this.tryCount++;
+                //         if (this.tryCount <= this.retryLimit) {
+                //             //try again
+                //             $.ajax(this);
+                //             return;
+                //         }            
+                //         return;
+                //     }
+                //     if (xhr.status == 500) {
+                //         //handle error
+                //     } else {
+                //         //handle error
+                //     }
+                // }
             });
         });
     }
@@ -57,34 +76,35 @@ class api {
     getUserInfo(users) {
         const mainUser = users[0];
         const mainUserInfo = {
-            fname: mainUser["name"]["first"],
-            lname: mainUser["name"]["last"],
-            pic: mainUser["picture"]["thumbnail"],
-            city: mainUser["location"]["city"],
-            state: mainUser["location"]["state"]
+            fname: mainUser.name.first,
+            lname: mainUser.name.last,
+            pic: mainUser.picture.large,
+            city: mainUser.location.city,
+            state: mainUser.location.state
         };
         return mainUserInfo;
     }
     getFriendsInfo(users) {
         let FriendsData = [];
         for (let i = 1; i < 6; i++) {
-            FriendsData.push({ fname: users[i]["name"]["first"], lname: users[i]["name"]["last"] });
+            FriendsData.push({ fname: users[i].name.first, lname: users[i].name.last });
         }
         return { FriendsData };
     }
     getPokemonInfo(pokemon) {
-        return {
-            pokName: pokemon["name"],
-            pokImg: pokemon["sprites"]["front_default"]
+        const poke = {
+            pokName: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+            pokImg: pokemon.sprites.front_default
         };
+        return poke;
     }
     callAll() {
         return __awaiter(this, void 0, void 0, function* () {
             let result = {
                 ye: "",
                 bacon: "",
-                pokemon: {},
-                user: {},
+                pokemon: { pokName: "", pokImg: "" },
+                user: { fname: "", lname: "", pic: "", city: "", state: "" },
                 friends: {}
             };
             const ye = this.YeApiCall();
@@ -96,9 +116,9 @@ class api {
             const getPokemon = this.getPokemonInfo;
             yield Promise.all([ye, bacon, pokemon, users])
                 .then(function (results) {
-                const allUsers = results[3]["results"];
+                const allUsers = results[3].results;
                 result = {
-                    ye: results[0]["quote"],
+                    ye: results[0].quote,
                     bacon: results[1],
                     pokemon: getPokemon(results[2]),
                     user: getUser(allUsers),
@@ -109,3 +129,21 @@ class api {
         });
     }
 }
+// //override
+// processData(rawData: any){
+//     this.userList = JSON.parse(JSON.stringify(rawData))
+//     this.userList =  this.userList.map( u =>  (this.computeUser(u)))
+//     this.mainUser = this.userList[0]
+//     this.userList.shift()
+//     return this
+// }
+// computeUser(rawUser: any){
+//     let user: typeof User = {
+//         fname: rawUser.name.first,
+//         lname:  rawUser.name.last,
+//         picture: rawUser.picture.thumbnail, 
+//         city:  rawUser.location.city,
+//         state: rawUser.location.state,
+//     }
+//     return user
+// }

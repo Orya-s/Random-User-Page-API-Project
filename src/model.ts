@@ -4,10 +4,29 @@ and able to generate a user’s data.  */
 
 
 
+let User: {     // user type
+    fname:string,
+    lname:string,
+    pic:string,
+    city:string,
+    state:string
+}
+
+let Data: {     // data type
+    ye:string,
+    bacon:string,
+    pokemon:Object,
+    user:typeof User,
+    friends:Object
+}
+
+let Pokemon: {      // pokemon type
+    pokName:string,
+    pokImg:string 
+}
+
 
 // APIs
-
-
 class api {
     
     // YE
@@ -34,7 +53,23 @@ class api {
         return await $.ajax({
             method: "GET",
             url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,
-            success: (data) => data
+            success: (data) => data,
+            // error: function(xhr, textStatus, errorThrown ) {
+            //     if (textStatus == 'timeout') {
+            //         this.tryCount++;
+            //         if (this.tryCount <= this.retryLimit) {
+            //             //try again
+            //             $.ajax(this);
+            //             return;
+            //         }            
+            //         return;
+            //     }
+            //     if (xhr.status == 500) {
+            //         //handle error
+            //     } else {
+            //         //handle error
+            //     }
+            // }
         })
     }
 
@@ -47,41 +82,40 @@ class api {
         })
     }
 
-    private getUserInfo(users: any) {      // sets user data
+    private getUserInfo(users: Object[]):typeof User {      // sets user data
         const mainUser:any = users[0];
-
-        const mainUserInfo:Object = {
-            fname: mainUser["name"]["first"],
-            lname: mainUser["name"]["last"],
-            pic: mainUser["picture"]["thumbnail"],
-            city: mainUser["location"]["city"],
-            state: mainUser["location"]["state"]
+        const mainUserInfo:typeof User = {
+            fname: mainUser.name.first,
+            lname: mainUser.name.last,
+            pic: mainUser.picture.large,
+            city: mainUser.location.city,
+            state: mainUser.location.state
         }
-        
         return mainUserInfo
     }
     
-    private getFriendsInfo(users: any) {      // sets friends data
+    private getFriendsInfo(users: any):Object {      // sets friends data
         let FriendsData:Object[] = [];
         for (let i = 1; i < 6; i++) {
-            FriendsData.push({fname: users[i]["name"]["first"], lname: users[i]["name"]["last"]})
+            FriendsData.push({fname: users[i].name.first, lname: users[i].name.last})
         }
         return {FriendsData};
     }
 
-    private getPokemonInfo(pokemon: any) {       // sets pokemon data 
-        return {
-            pokName: pokemon["name"],
-            pokImg: pokemon["sprites"]["front_default"]
+    private getPokemonInfo(pokemon: any):typeof Pokemon {       // sets pokemon data 
+        const poke:typeof Pokemon = {
+            pokName: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+            pokImg: pokemon.sprites.front_default
         }
+        return poke
     }
 
     async callAll() {
-        let result = {
+        let result:typeof Data = {
             ye: "",
             bacon: "",
-            pokemon: {},
-            user: {},
+            pokemon: {pokName:"", pokImg:""},
+            user: {fname: "", lname: "", pic: "", city: "", state: ""},
             friends: {}
         };
 
@@ -97,10 +131,10 @@ class api {
     
         await Promise.all([ye, bacon, pokemon, users])
         .then(function (results) {
-            const allUsers = results[3]["results"];
-            
+            const allUsers = results[3].results;
+
             result = {
-                ye: results[0]["quote"],
+                ye: results[0].quote,
                 bacon: results[1],
                 pokemon: getPokemon(results[2]),
                 user: getUser(allUsers),
@@ -113,3 +147,31 @@ class api {
 
 }
 
+
+
+
+
+
+// //override
+
+// processData(rawData: any){
+//     this.userList = JSON.parse(JSON.stringify(rawData))
+
+//     this.userList =  this.userList.map( u =>  (this.computeUser(u)))
+//     this.mainUser = this.userList[0]
+//     this.userList.shift()
+
+//     return this
+// }
+
+// computeUser(rawUser: any){
+//     let user: typeof User = {
+//         fname: rawUser.name.first,
+//         lname:  rawUser.name.last,
+//         picture: rawUser.picture.thumbnail, 
+//         city:  rawUser.location.city,
+//         state: rawUser.location.state,
+//     }
+
+//     return user
+// }
