@@ -20,7 +20,20 @@ class render {
         const source = $('#meat-template').html();
         const template = Handlebars.compile(source);
         const newHTML = template({ bacon });
-        // append our new html to the page
         $('.meat-container').append(newHTML);
+    }
+    rendPokemon(pokemon) {
+        const source = $("#pokemon-template").html();
+        const template = Handlebars.compile(source);
+        const newHTML = template(pokemon);
+        $('.pokemon-container').append(newHTML);
+    }
+    rendAll(result) {
+        console.log(result["ye"]);
+        this.rendQuote(result["ye"]);
+        console.log(result["bacon"]);
+        this.rendBacon(result["bacon"]);
+        console.log(result["pokemon"]);
+        this.rendPokemon(result["pokemon"]);
     }
 }
