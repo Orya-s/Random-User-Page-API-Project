@@ -29,7 +29,6 @@
 
 
 
-
     <!-- handlebars templates -->
 
     <script id="ye-template" type="text/x-handlebars-template">
@@ -49,16 +48,24 @@
     </script>
 
     <script id="user-template" type="text/x-handlebars-template">
+        <img id="profile-pic" src="{{pic}}">
+        <div class="user-info">{{fname}} {{lname}} &#10;&#13; {{city}}, {{state}}</div>
+    </script>
+
+    <script id="friends-template" type="text/x-handlebars-template">
+        <ul >
+            {{#each FriendsData}}
+            <li>
+                <div>{{fname}} {{lname}}</div>
+            </li>
+            {{/each}}
+        </ul>
     </script>
 
     
 
-
-
-
     <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
-    
 
     <script src="build/model.js"></script>
     <script src="build/view.js"></script>
