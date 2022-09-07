@@ -5,9 +5,6 @@ Renderer is a class which should render each section of the user page through Ha
 // RENDER
 class render {
     clean() {
-        // const user = document.querySelector(".user-container") as HTMLElement;
-        // // HTMLElement
-        // user.empty();
         $(".user-container").empty();
         $(".quote-container").empty();
         $(".pokemon-container").empty();

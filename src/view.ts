@@ -15,7 +15,7 @@ class render {
         $(".friends-container").empty();
     }
    
-    private rendQuote(quote:any) {    // ye quote
+    private rendQuote(quote:string) {    // ye quote
         const source = $('#ye-template').html();
         const template = Handlebars.compile(source);
         const newHTML = template({quote}); 
@@ -24,7 +24,7 @@ class render {
         $('.quote-container').append(newHTML);
     }
 
-    private rendBacon(bacon: any) {     // bacon ipsum
+    private rendBacon(bacon:string) {     // bacon ipsum
         const source = $('#meat-template').html();
         const template = Handlebars.compile(source);
         const newHTML = template({bacon}); 
@@ -32,7 +32,7 @@ class render {
         $('.meat-container').append(newHTML);
     }
 
-    private rendPokemon(pokemon:any) {     // Pokemon
+    private rendPokemon(pokemon:any) { // typeof Pokemon    // Pokemon
         const source = $("#pokemon-template").html();
         const template = Handlebars.compile(source);
         const newHTML = template(pokemon);
@@ -40,7 +40,7 @@ class render {
         $('.pokemon-container').append(newHTML);
     }
 
-    private rendUser(user:any) {        // main user
+    private rendUser(user:typeof User) {        // main user
         const source = $("#user-template").html();
         const template = Handlebars.compile(source);
         const newHTML = template(user);
@@ -57,7 +57,7 @@ class render {
     }
 
 
-    rendAll(result: any) {
+    rendAll(result:typeof Data) {
         this.clean();
         this.rendQuote(result["ye"]);
         this.rendBacon(result["bacon"]);
@@ -66,4 +66,3 @@ class render {
         this.rendFriends(result["friends"]);
     }
 }
-
