@@ -19,7 +19,7 @@ class api {
             return yield $.ajax({
                 method: "GET",
                 url: 'https://api.kanye.rest',
-                success: (data) => data.quote
+                success: (data) => data
             });
         });
     }
@@ -33,22 +33,73 @@ class api {
             });
         });
     }
-    // UserApiCall() {
-    // }
+    // Pokemon
+    PokemonApiCall() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pokemonID = Math.floor(Math.random() * 905);
+            return yield $.ajax({
+                method: "GET",
+                url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,
+                success: (data) => data
+            });
+        });
+    }
+    // Users
+    UserApiCall() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield $.ajax({
+                method: "GET",
+                url: `https://randomuser.me/api/?results=7`,
+                success: (data) => data
+            });
+        });
+    }
+    getUsersInfo(users) {
+        const mainUser = users[0];
+        const mainUserInfo = {
+            fname: mainUser["name"]["first"],
+            lname: mainUser["name"]["last"],
+            pic: mainUser["picture"]["thumbnail"],
+            city: mainUser["location"]["city"],
+            state: mainUser["location"]["state"]
+        };
+        let restUsersData = [];
+        for (let i = 1; i < 6; i++) {
+            restUsersData.push({ fname: users[i]["name"]["first"], lname: users[i]["name"]["last"] });
+        }
+        return {
+            mainUserInfo,
+            restUsersData
+        };
+    }
+    getPokemonInfo(pokemon) {
+        return {
+            pokName: pokemon["name"],
+            pokImg: pokemon["sprites"]["front_default"]
+        };
+    }
     callAll() {
         return __awaiter(this, void 0, void 0, function* () {
             let result = {
                 ye: "",
-                bacon: ""
+                bacon: "",
+                pokemon: {},
+                users: {}
             };
             const ye = this.YeApiCall();
             const bacon = this.BaconApiCall();
-            yield Promise.all([ye, bacon])
+            const pokemon = this.PokemonApiCall();
+            const users = this.UserApiCall();
+            const getUsers = this.getUsersInfo;
+            const getPokemon = this.getPokemonInfo;
+            yield Promise.all([ye, bacon, pokemon, users])
                 .then(function (results) {
-                // console.log(results[0]["quote"])
+                const allUsers = results[3]["results"];
                 result = {
                     ye: results[0]["quote"],
-                    bacon: results[1]
+                    bacon: results[1],
+                    pokemon: getPokemon(results[2]),
+                    users: getUsers(allUsers)
                 };
             });
             return result;
