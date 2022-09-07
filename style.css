@@ -13,15 +13,16 @@ body {
     height: 100vh;
     display: grid;
     grid-template-columns: 3fr 2fr 1fr;
-    grid-template-rows: 1fr 1fr 3fr;
+    grid-template-rows: 1fr 1fr 3fr ;  /*1fr*/
 }
 
 .user-container {
     align-self: start;
     grid-row: 1;
     grid-column: 1;
-    font-size: 25px;
-    background-color: #3498db;
+    font-size: 22px;
+    background-image: linear-gradient(135deg, #3498db 30%, #5505a5 , #ea6a93);
+
     padding: 1vmax;
     box-shadow: 1px 1px 3px black;
     border-bottom-right-radius: 4px;
@@ -41,6 +42,8 @@ body {
     border-radius: 50%;
     background-size: 100%;
     vertical-align: middle;
+    border: 1.5px solid white;
+    margin-right: 5px;
 }
 
 .quote-container {
@@ -69,7 +72,8 @@ body {
 .friends {
     grid-row: 3;
     grid-column: 3;
-    background-color: #3498db;
+    /* background-color: #3498db; */
+    background-image: linear-gradient(135deg, #3498db 25%, #5505a5 , #ea6a93);
     font-size: 1.5vmax;
     color: #ecf0f1;
     border-top-left-radius: 4px;
@@ -100,9 +104,9 @@ button {
     width: 180px;
     height: 45px;
     border-radius: 6px;
-    background-color: #27ae60;
+    /* background-color: #27ae60; */
     color: #ecf0f1;
-    font-size: 1vmax;
+    font-size: 80%;
     cursor: pointer;
 }
 
@@ -143,6 +147,8 @@ button {
 }
 
 .buttons-container {
+    /* grid-row: 4;
+    grid-column: 1; */
     position: absolute;
     bottom: 1%;
     left: 0.5%
@@ -150,66 +156,7 @@ button {
 
 
 
-/* <!-- HTML !-->
-<button class="button-64" role="button"><span class="text">Button 64</span></button> */
-
-/* CSS */
-/* .button-64 {
-  align-items: center;
-  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
-  border: 0;
-  border-radius: 8px;
-  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
-  box-sizing: border-box;
-  color: #FFFFFF;
-  display: flex;
-  font-family: Phantomsans, sans-serif;
-  font-size: 20px;
-  justify-content: center;
-  line-height: 1em;
-  max-width: 100%;
-  min-width: 140px;
-  padding: 3px;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.button-64:active,
-.button-64:hover {
-  outline: 0;
-}
-
-.button-64 span {
-  background-color: rgb(5, 6, 45);
-  padding: 16px 24px;
-  border-radius: 6px;
-  width: 100%;
-  height: 100%;
-  transition: 300ms;
-}
-
-.button-64:hover span {
-  background: none;
-}
-
-@media (min-width: 768px) {
-  .button-64 {
-    font-size: 24px;
-    min-width: 196px;
-  }
-} */
-
-
-
-
-/* <!-- HTML !--> */
-/* <button class="button-85" role="button">Button 85</button> */
-
-/* CSS */
+/* button CSS */
 .button-85 {
   padding: 0.6em 2em;
   border: none;
@@ -217,7 +164,7 @@ button {
   color: rgb(255, 255, 255);
   background: #111;
   cursor: pointer;
-  position: relative;
+  /* position: relative; */
   z-index: 0;
   border-radius: 10px;
   user-select: none;
@@ -276,3 +223,65 @@ button {
   top: 0;
   border-radius: 10px;
 }
+
+
+
+/* <!-- HTML !-->
+<button class="button-75" role="button"><span class="text">Button 75</span></button> */
+
+/* CSS */
+/* .button-75 {
+  align-items: center;
+  background-image: linear-gradient(135deg, #f34079 40%, #fc894d);
+  border: 0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-family: "Codec cold",sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  height: 54px;
+  justify-content: center;
+  letter-spacing: .4px;
+  line-height: 1;
+  max-width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 3px;
+  text-decoration: none;
+  text-transform: uppercase;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-75:active {
+  outline: 0;
+}
+
+.button-75:hover {
+  outline: 0;
+}
+
+.button-75 span {
+  transition: all 200ms;
+}
+
+.button-75:hover span {
+  transform: scale(.9);
+  opacity: .75;
+}
+
+@media screen and (max-width: 991px) {
+  .button-75 {
+    font-size: 15px;
+    height: 50px;
+  }
+
+  .button-75 span {
+    line-height: 50px;
+  }
+} */
