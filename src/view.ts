@@ -6,6 +6,14 @@ Renderer is a class which should render each section of the user page through Ha
 // RENDER
 
 class render {
+    
+    private clean() {
+        $(".user-container").empty();
+        $(".quote-container").empty();
+        $(".pokemon-container").empty();
+        $(".meat-container").empty();
+        $(".friends-container").empty();
+    }
    
     private rendQuote(quote:any) {    // ye quote
         const source = $('#ye-template').html();
@@ -50,9 +58,10 @@ class render {
 
 
     rendAll(result: any) {
-        this.rendQuote(result["ye"])
-        this.rendBacon(result["bacon"])
-        this.rendPokemon(result["pokemon"])
+        this.clean();
+        this.rendQuote(result["ye"]);
+        this.rendBacon(result["bacon"]);
+        this.rendPokemon(result["pokemon"]);
         this.rendUser(result["user"]);
         this.rendFriends(result["friends"]);
     }

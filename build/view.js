@@ -4,6 +4,16 @@ Renderer is a class which should render each section of the user page through Ha
 */
 // RENDER
 class render {
+    clean() {
+        // const user = document.querySelector(".user-container") as HTMLElement;
+        // // HTMLElement
+        // user.empty();
+        $(".user-container").empty();
+        $(".quote-container").empty();
+        $(".pokemon-container").empty();
+        $(".meat-container").empty();
+        $(".friends-container").empty();
+    }
     rendQuote(quote) {
         const source = $('#ye-template').html();
         const template = Handlebars.compile(source);
@@ -36,15 +46,11 @@ class render {
         $('.friends-container').append(newHTML);
     }
     rendAll(result) {
-        console.log(result["ye"]);
+        this.clean();
         this.rendQuote(result["ye"]);
-        console.log(result["bacon"]);
         this.rendBacon(result["bacon"]);
-        console.log(result["pokemon"]);
         this.rendPokemon(result["pokemon"]);
-        console.log(result["user"]);
         this.rendUser(result["user"]);
-        console.log(result["friends"]);
         this.rendFriends(result["friends"]);
     }
 }
