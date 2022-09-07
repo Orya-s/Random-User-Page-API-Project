@@ -47,7 +47,7 @@ class api {
         })
     }
 
-    private getUsersInfo(users: any) {      // sets useres data
+    private getUserInfo(users: any) {      // sets user data
         const mainUser:any = users[0];
 
         const mainUserInfo:Object = {
@@ -57,17 +57,16 @@ class api {
             city: mainUser["location"]["city"],
             state: mainUser["location"]["state"]
         }
-
-        let restUsersData:Object[] = [];
-        for (let i = 1; i < 6; i++) {
-            restUsersData.push({fname: users[i]["name"]["first"], lname: users[i]["name"]["last"]})
-            
-        }
         
-        return {
-            mainUserInfo,
-            restUsersData
+        return mainUserInfo
+    }
+    
+    private getFriendsInfo(users: any) {      // sets friends data
+        let FriendsData:Object[] = [];
+        for (let i = 1; i < 6; i++) {
+            FriendsData.push({fname: users[i]["name"]["first"], lname: users[i]["name"]["last"]})
         }
+        return {FriendsData};
     }
 
     private getPokemonInfo(pokemon: any) {       // sets pokemon data 
@@ -82,7 +81,8 @@ class api {
             ye: "",
             bacon: "",
             pokemon: {},
-            users: {}
+            user: {},
+            friends: {}
         };
 
         const ye = this.YeApiCall()
@@ -90,7 +90,8 @@ class api {
         const pokemon = this.PokemonApiCall()
         const users = this.UserApiCall()
 
-        const getUsers = this.getUsersInfo
+        const getUser = this.getUserInfo
+        const getFriends = this.getFriendsInfo
         const getPokemon = this.getPokemonInfo
 
     
@@ -102,7 +103,8 @@ class api {
                 ye: results[0]["quote"],
                 bacon: results[1],
                 pokemon: getPokemon(results[2]),
-                users: getUsers(allUsers)
+                user: getUser(allUsers),
+                friends: getFriends(allUsers)
             }
         })
 

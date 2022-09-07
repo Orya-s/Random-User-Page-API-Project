@@ -54,7 +54,7 @@ class api {
             });
         });
     }
-    getUsersInfo(users) {
+    getUserInfo(users) {
         const mainUser = users[0];
         const mainUserInfo = {
             fname: mainUser["name"]["first"],
@@ -63,14 +63,14 @@ class api {
             city: mainUser["location"]["city"],
             state: mainUser["location"]["state"]
         };
-        let restUsersData = [];
+        return mainUserInfo;
+    }
+    getFriendsInfo(users) {
+        let FriendsData = [];
         for (let i = 1; i < 6; i++) {
-            restUsersData.push({ fname: users[i]["name"]["first"], lname: users[i]["name"]["last"] });
+            FriendsData.push({ fname: users[i]["name"]["first"], lname: users[i]["name"]["last"] });
         }
-        return {
-            mainUserInfo,
-            restUsersData
-        };
+        return { FriendsData };
     }
     getPokemonInfo(pokemon) {
         return {
@@ -84,13 +84,15 @@ class api {
                 ye: "",
                 bacon: "",
                 pokemon: {},
-                users: {}
+                user: {},
+                friends: {}
             };
             const ye = this.YeApiCall();
             const bacon = this.BaconApiCall();
             const pokemon = this.PokemonApiCall();
             const users = this.UserApiCall();
-            const getUsers = this.getUsersInfo;
+            const getUser = this.getUserInfo;
+            const getFriends = this.getFriendsInfo;
             const getPokemon = this.getPokemonInfo;
             yield Promise.all([ye, bacon, pokemon, users])
                 .then(function (results) {
@@ -99,7 +101,8 @@ class api {
                     ye: results[0]["quote"],
                     bacon: results[1],
                     pokemon: getPokemon(results[2]),
-                    users: getUsers(allUsers)
+                    user: getUser(allUsers),
+                    friends: getFriends(allUsers)
                 };
             });
             return result;
