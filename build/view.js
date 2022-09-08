@@ -25,6 +25,7 @@ class render {
         $('.meat-container').append(newHTML);
     }
     rendPokemon(pokemon) {
+        Handlebars.registerHelper('makeCapital', (str) => `${str.charAt(0).toUpperCase() + str.slice(1)}`);
         const source = $("#pokemon-template").html();
         const template = Handlebars.compile(source);
         const newHTML = template(pokemon);
@@ -39,7 +40,7 @@ class render {
     rendFriends(friends) {
         const source = $("#friends-template").html();
         const template = Handlebars.compile(source);
-        const newHTML = template(friends);
+        const newHTML = template({ friends });
         $('.friends-container').append(newHTML);
     }
     rendAll(result) {

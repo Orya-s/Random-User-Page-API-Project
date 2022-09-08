@@ -7,7 +7,7 @@ Renderer is a class which should render each section of the user page through Ha
 
 class render {
     
-    private clean() {
+    private clean(): void {
         $(".user-container").empty();
         $(".quote-container").empty();
         $(".pokemon-container").empty();
@@ -15,7 +15,7 @@ class render {
         $(".friends-container").empty();
     }
    
-    private rendQuote(quote:string) {    // ye quote
+    private rendQuote(quote:string): void {    // ye quote
         const source = $('#ye-template').html();
         const template = Handlebars.compile(source);
         const newHTML = template({quote}); 
@@ -24,7 +24,7 @@ class render {
         $('.quote-container').append(newHTML);
     }
 
-    private rendBacon(bacon:string) {     // bacon ipsum
+    private rendBacon(bacon:string): void {     // bacon ipsum
         const source = $('#meat-template').html();
         const template = Handlebars.compile(source);
         const newHTML = template({bacon}); 
@@ -32,7 +32,8 @@ class render {
         $('.meat-container').append(newHTML);
     }
 
-    private rendPokemon(pokemon:any) { // typeof Pokemon    // Pokemon
+    private rendPokemon(pokemon:typeof Pokemon): void {       // Pokemon
+        Handlebars.registerHelper('makeCapital', (str) => `${str.charAt(0).toUpperCase() + str.slice(1)}`)
         const source = $("#pokemon-template").html();
         const template = Handlebars.compile(source);
         const newHTML = template(pokemon);
@@ -40,7 +41,7 @@ class render {
         $('.pokemon-container').append(newHTML);
     }
 
-    private rendUser(user:typeof User) {        // main user
+    private rendUser(user:typeof User): void {        // main user
         const source = $("#user-template").html();
         const template = Handlebars.compile(source);
         const newHTML = template(user);
@@ -48,16 +49,16 @@ class render {
         $('.user-container').append(newHTML);
     }
 
-    private rendFriends(friends:any) {      // friends list
+    private rendFriends(friends:typeof Friend[]): void {      // friends list
         const source = $("#friends-template").html();
         const template = Handlebars.compile(source);
-        const newHTML = template(friends);
+        const newHTML = template({friends});
 
         $('.friends-container').append(newHTML);
     }
 
 
-    rendAll(result:typeof Data) {
+    rendAll(result:typeof Data): void {
         this.clean();
         this.rendQuote(result["ye"]);
         this.rendBacon(result["bacon"]);
