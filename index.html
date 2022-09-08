@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="#">
     <title>API Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -25,7 +26,6 @@
             </div>	
         </div>	
         <div class="buttons-container">
-            <!-- <button id="genUser" class="buttons">Generate User</button> -->
             <button id="genUser" class="button-85 buttons" role="button"><div class="btn-txt">Generate User</div></button>
         </div>
     </div>
@@ -47,18 +47,18 @@
     </script>
 
     <script id="pokemon-template" type="text/x-handlebars-template">
-        <img id="pokemon-image" src="{{pokImg}}"/>
-        <span id="pokemon-text">Favorite Pokemon: {{pokName}}</span>
+        <img alt="Pokemon" id="pokemon-image" src="{{pokImg}}"/>
+        <span id="pokemon-text">Favorite Pokemon: {{makeCapital pokName}}</span>
     </script>
 
     <script id="user-template" type="text/x-handlebars-template">
-        <img id="profile-pic" src="{{pic}}">
+        <img alt="User" id="profile-pic" src="{{pic}}">
         <div class="user-info">{{fname}} {{lname}} &#10;&#13; {{city}}, {{state}}</div>
     </script>
 
     <script id="friends-template" type="text/x-handlebars-template">
-        <ul >
-            {{#each FriendsData}}
+        <ul>
+            {{#each friends}}
             <li>
                 <div>{{fname}} {{lname}}</div>
             </li>
@@ -66,13 +66,12 @@
         </ul>
     </script>
 
-    <!-- <script id="button-template" type="text/x-handlebars-template">
-        <button id="genUser" class="buttons">Generate User</button>
-    </script> -->
     
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
+
 
     <script src="build/model.js"></script>
     <script src="build/view.js"></script>
