@@ -7,14 +7,12 @@ it will fetch and load the data on the screen  */
 
 // EVENTS
 
-// console.log("hi");
 const API = new api()
 const rend = new render()
 
 // When first loading the page
 API.callAll().then((result) => {
     rend.rendAll(result);
-
 })
 
 // When pressing the Generate User button
