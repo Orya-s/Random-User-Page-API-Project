@@ -35,31 +35,55 @@ let Friend: {       // friend type
 class api {
     
     // YE
-    private async YeApiCall() {
-        return await $.ajax({
-            method: "GET",
-            url: 'https://api.kanye.rest',
-            success: (data) => data
-        })
+    private async YeApiCall(errCount:number = 0) {
+        let ye:any;
+
+        try {
+            ye = await $.ajax({
+                method: "GET",
+                url: `https://api.kanye.rest`,    
+                success: (data) => data
+            })
+        } catch (error) {
+            return await this.errorHandler(error, errCount, this.BaconApiCall)
+        }
+
+        return ye
     }
 
     // Bacon Ipsum
-    private async BaconApiCall() {
-        return await $.ajax({
-            method: "GET",
-            url: 'https://baconipsum.com/api/?type=meat-and-filler&paras=1',       
-            success: (data) => data 
-        })
+    private async BaconApiCall(errCount:number = 0) {
+        let bacon:any;
+
+        try {
+            bacon = await $.ajax({
+                method: "GET",
+                url: `https://baconipsum.com/api/?type=meat-and-filler&paras=1`,    
+                success: (data) => data
+            })
+        } catch (error) {
+            return await this.errorHandler(error, errCount, this.BaconApiCall)
+        }
+
+        return bacon
     }
 
     // Pokemon
-    private async PokemonApiCall() {
+    private async PokemonApiCall(errCount:number = 0) {
         const pokemonID = Math.floor(Math.random() * 904) + 1
-        return await $.ajax({
-            method: "GET",
-            url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,
-            success: (data) => data,
-        })
+        let pokemon:any;
+    
+        try {
+            pokemon = await $.ajax({
+                method: "GET",
+                url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,    
+                success: (data) => data
+            })
+        } catch (error) {
+            return await this.errorHandler(error, errCount, this.PokemonApiCall)
+        }
+
+        return pokemon
     }
 
     // Users
@@ -72,38 +96,24 @@ class api {
                 url: `https://randomuser.me/api/?results=7`,    
                 success: (data) => data
             })
-
         } catch (error) {
-            return await this.errorHandler(error, errCount)
-            // if(errCount <= 5) {
-            //     errCount++;
-            //     console.warn(error);
-            //     console.log("trying again...");
-
-            //     users = this.UserApiCall(errCount)
-            //     console.log(`Attempt number ${errCount}`);
-            //     return users;
-            // }
-            // else {
-            //     console.warn(error);
-            //     console.log("Can't reload data, error in server");
-            // }
+            return await this.errorHandler(error, errCount, this.UserApiCall)
         }
 
         return users
     }
 
-    private async errorHandler(error:any, errCount:number):Promise<any> {
+    private async errorHandler(error:any, errCount:number, OriginalApiCall:Function):Promise<any> {
         if(errCount <= 5) {
             errCount++;
             console.warn(error);
             console.log("trying again...");
             console.log(`Attempt number ${errCount}`);
-            return await this.UserApiCall(errCount)
+            return await OriginalApiCall(errCount)
         }
         else {
             console.warn(error);
-            console.log("Can't reload data, error in server");
+            console.log("Can't load data, error in server");
         }
     }
 

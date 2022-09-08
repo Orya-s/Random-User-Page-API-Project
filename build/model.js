@@ -18,34 +18,55 @@ let Friend;
 // APIs
 class api {
     // YE
-    YeApiCall() {
+    YeApiCall(errCount = 0) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield $.ajax({
-                method: "GET",
-                url: 'https://api.kanye.rest',
-                success: (data) => data
-            });
+            let ye;
+            try {
+                ye = yield $.ajax({
+                    method: "GET",
+                    url: `https://api.kanye.rest`,
+                    success: (data) => data
+                });
+            }
+            catch (error) {
+                return yield this.errorHandler(error, errCount, this.BaconApiCall);
+            }
+            return ye;
         });
     }
     // Bacon Ipsum
-    BaconApiCall() {
+    BaconApiCall(errCount = 0) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield $.ajax({
-                method: "GET",
-                url: 'https://baconipsum.com/api/?type=meat-and-filler&paras=1',
-                success: (data) => data
-            });
+            let bacon;
+            try {
+                bacon = yield $.ajax({
+                    method: "GET",
+                    url: `https://baconipsum.com/api/?type=meat-and-filler&paras=1`,
+                    success: (data) => data
+                });
+            }
+            catch (error) {
+                return yield this.errorHandler(error, errCount, this.BaconApiCall);
+            }
+            return bacon;
         });
     }
     // Pokemon
-    PokemonApiCall() {
+    PokemonApiCall(errCount = 0) {
         return __awaiter(this, void 0, void 0, function* () {
             const pokemonID = Math.floor(Math.random() * 904) + 1;
-            return yield $.ajax({
-                method: "GET",
-                url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,
-                success: (data) => data,
-            });
+            let pokemon;
+            try {
+                pokemon = yield $.ajax({
+                    method: "GET",
+                    url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,
+                    success: (data) => data
+                });
+            }
+            catch (error) {
+                return yield this.errorHandler(error, errCount, this.PokemonApiCall);
+            }
+            return pokemon;
         });
     }
     // Users
@@ -60,35 +81,23 @@ class api {
                 });
             }
             catch (error) {
-                // return await this.errorHandler(error, errCount)
-                if (errCount <= 5) {
-                    errCount++;
-                    console.warn(error);
-                    console.log("trying again...");
-                    users = this.UserApiCall(errCount);
-                    console.log(`Attempt number ${errCount}`);
-                    return users;
-                }
-                else {
-                    console.warn(error);
-                    console.log("Can't reload data, error in server");
-                }
+                return yield this.errorHandler(error, errCount, this.UserApiCall);
             }
             return users;
         });
     }
-    errorHandler(error, errCount) {
+    errorHandler(error, errCount, OriginalApiCall) {
         return __awaiter(this, void 0, void 0, function* () {
             if (errCount <= 5) {
                 errCount++;
                 console.warn(error);
                 console.log("trying again...");
                 console.log(`Attempt number ${errCount}`);
-                return yield this.UserApiCall(errCount);
+                return yield OriginalApiCall(errCount);
             }
             else {
                 console.warn(error);
-                console.log("Can't reload data, error in server");
+                console.log("Can't load data, error in server");
             }
         });
     }
