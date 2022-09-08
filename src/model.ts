@@ -15,14 +15,19 @@ let User: {     // user type
 let Data: {     // data type
     ye:string,
     bacon:string,
-    pokemon:Object,
+    pokemon:typeof Pokemon,
     user:typeof User,
-    friends:Object
+    friends:typeof Friend[]
 }
 
 let Pokemon: {      // pokemon type
     pokName:string,
     pokImg:string 
+}
+
+let Friend: {       // friend type
+    fname:string,
+    lname:string
 }
 
 
@@ -49,37 +54,57 @@ class api {
 
     // Pokemon
     private async PokemonApiCall() {
-        const pokemonID = Math.floor(Math.random() * 905)
+        const pokemonID = Math.floor(Math.random() * 904) + 1
         return await $.ajax({
             method: "GET",
             url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,
             success: (data) => data,
-            // error: function(xhr, textStatus, errorThrown ) {
-            //     if (textStatus == 'timeout') {
-            //         this.tryCount++;
-            //         if (this.tryCount <= this.retryLimit) {
-            //             //try again
-            //             $.ajax(this);
-            //             return;
-            //         }            
-            //         return;
-            //     }
-            //     if (xhr.status == 500) {
-            //         //handle error
-            //     } else {
-            //         //handle error
-            //     }
-            // }
         })
     }
 
     // Users
-    private async UserApiCall() {
-        return await $.ajax({
-            method: "GET",
-            url: `https://randomuser.me/api/?results=7`,
-            success: (data) => data
-        })
+    private async UserApiCall(errCount:number = 0) {
+        let users:any;
+        
+        try {
+            users = await $.ajax({
+                method: "GET",
+                url: `https://randomuser.me/api/?results=7`,    
+                success: (data) => data
+            })
+
+        } catch (error) {
+            return await this.errorHandler(error, errCount)
+            // if(errCount <= 5) {
+            //     errCount++;
+            //     console.warn(error);
+            //     console.log("trying again...");
+
+            //     users = this.UserApiCall(errCount)
+            //     console.log(`Attempt number ${errCount}`);
+            //     return users;
+            // }
+            // else {
+            //     console.warn(error);
+            //     console.log("Can't reload data, error in server");
+            // }
+        }
+
+        return users
+    }
+
+    private async errorHandler(error:any, errCount:number):Promise<any> {
+        if(errCount <= 5) {
+            errCount++;
+            console.warn(error);
+            console.log("trying again...");
+            console.log(`Attempt number ${errCount}`);
+            return await this.UserApiCall(errCount)
+        }
+        else {
+            console.warn(error);
+            console.log("Can't reload data, error in server");
+        }
     }
 
     private getUserInfo(users: Object[]):typeof User {      // sets user data
@@ -94,17 +119,18 @@ class api {
         return mainUserInfo
     }
     
-    private getFriendsInfo(users: any):Object {      // sets friends data
-        let FriendsData:Object[] = [];
-        for (let i = 1; i < 6; i++) {
-            FriendsData.push({fname: users[i].name.first, lname: users[i].name.last})
+    private getFriendsInfo(users: any):typeof Friend[] {      // sets friends data
+        let FriendsData:typeof Friend[] = [];
+        for (let i = 1; i < 7; i++) {
+            let f:typeof Friend = {fname: users[i].name.first, lname: users[i].name.last}
+            FriendsData.push(f)
         }
-        return {FriendsData};
+        return FriendsData;
     }
 
     private getPokemonInfo(pokemon: any):typeof Pokemon {       // sets pokemon data 
         const poke:typeof Pokemon = {
-            pokName: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+            pokName: pokemon.name,
             pokImg: pokemon.sprites.front_default
         }
         return poke
@@ -116,7 +142,7 @@ class api {
             bacon: "",
             pokemon: {pokName:"", pokImg:""},
             user: {fname: "", lname: "", pic: "", city: "", state: ""},
-            friends: {}
+            friends: []
         };
 
         const ye = this.YeApiCall()

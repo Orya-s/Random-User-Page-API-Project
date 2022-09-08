@@ -14,6 +14,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let User;
 let Data;
 let Pokemon;
+let Friend;
 // APIs
 class api {
     // YE
@@ -39,38 +40,56 @@ class api {
     // Pokemon
     PokemonApiCall() {
         return __awaiter(this, void 0, void 0, function* () {
-            const pokemonID = Math.floor(Math.random() * 905);
+            const pokemonID = Math.floor(Math.random() * 904) + 1;
             return yield $.ajax({
                 method: "GET",
                 url: `https://pokeapi.co/api/v2/pokemon/${pokemonID}/`,
                 success: (data) => data,
-                // error: function(xhr, textStatus, errorThrown ) {
-                //     if (textStatus == 'timeout') {
-                //         this.tryCount++;
-                //         if (this.tryCount <= this.retryLimit) {
-                //             //try again
-                //             $.ajax(this);
-                //             return;
-                //         }            
-                //         return;
-                //     }
-                //     if (xhr.status == 500) {
-                //         //handle error
-                //     } else {
-                //         //handle error
-                //     }
-                // }
             });
         });
     }
     // Users
-    UserApiCall() {
+    UserApiCall(errCount = 0) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield $.ajax({
-                method: "GET",
-                url: `https://randomuser.me/api/?results=7`,
-                success: (data) => data
-            });
+            let users;
+            try {
+                users = yield $.ajax({
+                    method: "GET",
+                    url: `https://randomuser.me/api/?results=7`,
+                    success: (data) => data
+                });
+            }
+            catch (error) {
+                // return await this.errorHandler(error, errCount)
+                if (errCount <= 5) {
+                    errCount++;
+                    console.warn(error);
+                    console.log("trying again...");
+                    users = this.UserApiCall(errCount);
+                    console.log(`Attempt number ${errCount}`);
+                    return users;
+                }
+                else {
+                    console.warn(error);
+                    console.log("Can't reload data, error in server");
+                }
+            }
+            return users;
+        });
+    }
+    errorHandler(error, errCount) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (errCount <= 5) {
+                errCount++;
+                console.warn(error);
+                console.log("trying again...");
+                console.log(`Attempt number ${errCount}`);
+                return yield this.UserApiCall(errCount);
+            }
+            else {
+                console.warn(error);
+                console.log("Can't reload data, error in server");
+            }
         });
     }
     getUserInfo(users) {
@@ -86,14 +105,15 @@ class api {
     }
     getFriendsInfo(users) {
         let FriendsData = [];
-        for (let i = 1; i < 6; i++) {
-            FriendsData.push({ fname: users[i].name.first, lname: users[i].name.last });
+        for (let i = 1; i < 7; i++) {
+            let f = { fname: users[i].name.first, lname: users[i].name.last };
+            FriendsData.push(f);
         }
-        return { FriendsData };
+        return FriendsData;
     }
     getPokemonInfo(pokemon) {
         const poke = {
-            pokName: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+            pokName: pokemon.name,
             pokImg: pokemon.sprites.front_default
         };
         return poke;
@@ -105,7 +125,7 @@ class api {
                 bacon: "",
                 pokemon: { pokName: "", pokImg: "" },
                 user: { fname: "", lname: "", pic: "", city: "", state: "" },
-                friends: {}
+                friends: []
             };
             const ye = this.YeApiCall();
             const bacon = this.BaconApiCall();
