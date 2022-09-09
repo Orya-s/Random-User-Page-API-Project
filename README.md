@@ -17,5 +17,5 @@ Open the repo's website created by github at https://orya-s.github.io/Random-Use
 * Open the browser and on the address section use `ctrl` + `o`, then choose the index.html file and press enter.
 * enjoy!
 
-
-<img width="954" alt="image" src="https://user-images.githubusercontent.com/61458890/189385480-b7e7f419-88ea-4369-a927-fab44fbe243b.png">
+<br>
+<img width="955" alt="image" src="https://user-images.githubusercontent.com/61458890/189385776-0cad6c7b-38ad-4cf9-a2c7-25e1e557c9df.png">
