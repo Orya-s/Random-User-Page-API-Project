@@ -1,6 +1,6 @@
 # Random-User-Page-API Project
 
-Random User API Project is a basic version of a social network.
+Random User Page API Project is a basic version of a social network.
 The information shown for each user is - full name, address, favorite quote, about me section and a friends list. <br>
 This projects utilizes four different APIs to gather this information.   
 Use the Generate User button on the left bottom corner to load a different profile.
